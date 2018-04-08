@@ -10,12 +10,12 @@ $content-font: 'Lato', sans-serif;
 // main colors
 $page-background-color: #f1f1f1;
 $base-color: #1d1f38;
-$special-color: #2D3642;
-$highlight-color: #5c8b59;
+$special-color: #FF4C00;
+$highlight-color: #FF4C00;
 $text-color: #222;
 
 // easy styling
-$nav-background-color: $special-color;
+$nav-background-color: $base-color;
 $nav-text-color: $page-background-color;
 $algolia-search-box-color: #444;
 $algolia-search-box-icon-color: #888;
@@ -28,10 +28,12 @@ $bubble-color: #fff;
 $bubble-background-color: #ccc;
 $bubble-hover-color: $highlight-color;
 
+$left-line-color: rgba(0,0,0,0.05);
+
 $article-background-color: #fff;
 $meta-text-color: #999;
 $meta-border-color: #eee;
-$continue-reading-hover-color: $meta-text-color;
+$continue-reading-hover-color: $base-color;
 
 $footer-border-color: #eee;
 $footer-background-color: #ffffff80;
