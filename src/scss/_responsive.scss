@@ -81,6 +81,17 @@
         }
     }
 
+    .content {
+        table {
+            margin-left: -1.5em;
+            margin-right: -1.5em;
+        }
+        pre code {
+            margin-left: -2em;
+            margin-right: -2em;
+        }
+    }
+
     .main #disqus_thread {
         margin: 0 1.5em;
     }
