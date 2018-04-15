@@ -1,0 +1,119 @@
+{{ if .Site.DisqusShortname }}<div id="disqus_thread"></div>
+<script>
+    window.onload = function() {
+        ;( function( $, window, document, undefined )
+{
+	'use strict';
+
+	var $win			= $( window ),
+		throttle		= function(a,b){var c,d;return function(){var e=this,f=arguments,g=+new Date;c&&g<c+a?(clearTimeout(d),d=setTimeout(function(){c=g,b.apply(e,f)},a)):(c=g,b.apply(e,f))}},
+
+		throttleTO		= false,
+		laziness		= false,
+		disqusConfig	= false,
+		scriptUrl		= false,
+
+		scriptStatus	= 'unloaded',
+		$instance		= $(),
+
+		init = function()
+		{
+			if( !$instance.length || $instance.data( 'disqusLoaderStatus' ) == 'loaded' )
+				return true;
+
+			var winST = $win.scrollTop();
+
+			// if the element is too far below || too far above
+			if( $instance.offset().top - winST > $win.height() * laziness || winST - $instance.offset().top - $instance.outerHeight() - ( $win.height() * laziness ) > 0 )
+				return true;
+
+			$( '#disqus_thread' ).removeAttr( 'id' );
+			$instance.attr( 'id', 'disqus_thread' ).data( 'disqusLoaderStatus', 'loaded' );
+
+			if( scriptStatus == 'loaded' )
+			{
+				DISQUS.reset({ reload: true, config: disqusConfig });
+			}
+			else // unloaded | loading
+			{
+				window.disqus_config = disqusConfig;
+				if( scriptStatus == 'unloaded' )
+				{
+					scriptStatus = 'loading';
+					$.ajax(
+					{
+						url:		scriptUrl,
+						async:		true,
+						cache:		true,
+						dataType:	'script',
+						success:	function()
+						{
+							scriptStatus = 'loaded';
+						}
+					});
+				}
+			}
+		};
+
+        $win.on( 'scroll resize', throttle( throttleTO, init ));
+
+        $.disqusLoader = function( element, options )
+        {
+            options = $.extend({},
+            {
+                laziness:		1,
+                throttle:		250,
+                scriptUrl:		false,
+                disqusConfig:	false,
+
+            }, options );
+
+            laziness		= options.laziness + 1;
+            throttleTO		= options.throttle;
+            disqusConfig	= options.disqusConfig;
+            scriptUrl		= scriptUrl === false ? options.scriptUrl : scriptUrl; // set it only once
+            $instance		= ( typeof element == 'string' ? $( element ) : element ).eq( 0 );
+
+            $instance.data( 'disqusLoaderStatus', 'unloaded' );
+
+            init();
+        };
+
+        })( jQuery, window, document );
+        var options =
+        {
+        scriptUrl: '//adamczyk.disqus.com/embed.js',
+        laziness: 1,
+        throttle: 250,
+        disqusConfig: function () {
+            {{with .GetParam "disqus_identifier" }}this.page.identifier = '{{ . }}';{{end}}
+            {{with .GetParam "disqus_title" }}this.page.title = '{{ . }}';{{end}}
+            {{with .GetParam "disqus_url" }}this.page.url = '{{ . | html  }}';{{end}}
+            }
+        };
+$.disqusLoader( '.disqus_thread', options );
+        
+    };
+
+
+// jQuery
+</script>
+<!-- <script>
+    var disqus_config = function () {
+    {{with .GetParam "disqus_identifier" }}this.page.identifier = '{{ . }}';{{end}}
+    {{with .GetParam "disqus_title" }}this.page.title = '{{ . }}';{{end}}
+    {{with .GetParam "disqus_url" }}this.page.url = '{{ . | html  }}';{{end}}
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + {{ .Site.DisqusShortname }} + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script> -->
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>{{end}}

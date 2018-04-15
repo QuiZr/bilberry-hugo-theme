@@ -19,10 +19,6 @@
 
         <link rel="stylesheet" href="{{ "dist/theme.css" | relURL }}">
 
-        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.2.1/dist/instantsearch.min.css">
-        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.2.1/dist/instantsearch-theme-algolia.min.css">
-
-
         {{ if isset .Site.Params "css_modules" }}
             {{ range .Site.Params.css_modules }}
                 <link rel="stylesheet" href="{{ . | relURL }}">
